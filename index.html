@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AT Shorts - Calculadora</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+  <header>
+    <div class="header-atshorts">
+      <h3 class="font-1-1 cor-6"> Calculadora em desenvolvimento por colaboradores da <b>AT Shorts</b> - Todos os direitos reservados.</h3>
+    </div>
+    <div class="introducao">
+      <div class="calcula-imagem"><img src="/img/calcula-icone.png.png" alt="" width="100" height="100"></div>
+      <div class="introducao-calculadora">
+        <h1 class="font-1-7 cor-3">Calculadora de Pedidos</h1>
+      </div>
+
+  </header>
+
+
+  <div class="pedidos container">
+    <div class="titulo-pedidos">
+      <h2 class="cor-6 font-1-5 h2-info">Cole as informações aqui</h2>
+    </div>
+    <div class="informacoes-pedido">
+      <textarea class="caixa-pedidos" id="input-pedidos"></textarea>
+    </div>
+    <button class="botao-calcular" onclick="calculateTotal()">Calcular Total</button>
+    <button class="botao-calcular" onclick="resetInfo()">Limpar Informações</button>
+  </div>
+
+  </div>
+
+  <div class="resultados container">
+    <div class="resultado-div">
+      <h2>Quantidade de Itens</h2>
+      <ul id="total-categorias"></ul>
+    </div>
+    <div class="resultado-div">
+      <h2>Valor por Categoria</h2>
+      <ul id="valor-por-categoria"></ul>
+    </div>
+    <div class="resultado-div">
+      <h2>Informações do Pedido</h2>
+      <ul id="resultado-final"></ul>
+    </div>
+
+  </div>
+
+  <script>
+    const produtos = [
+      {
+        nome: "Regata em Ribana",
+        gramatura: 300,
+        valor: 30,
+      },
+      {
+        nome: "Bermuda de Linho",
+        gramatura: 300,
+        valor: 40,
+      },
+      {
+        nome: "Camisa de Ribana",
+        gramatura: 600,
+        valor: 40,
+      },
+      {
+        nome: "Camisa Ponto Roma",
+        gramatura: 300,
+        valor: 45,
+      },
+      {
+        nome: "Bermuda de Linho com Elastano",
+        gramatura: 300,
+        valor: 50,
+      },
+      {
+        nome: "Camisa de Botão Linho",
+        gramatura: 300,
+        valor: 50,
+      },
+      {
+        nome: "Camisa Tricot",
+        gramatura: 300,
+        valor: 50,
+      },
+      {
+        nome: "Calça Alfaiataria",
+        gramatura: 600,
+        valor: 60,
+      },
+      {
+        nome: "Short de Linho",
+        gramatura: 300,
+        valor: 37,
+      },
+    ];
+
+    function calculateTotal() {
+      const pedidosTexto = document.getElementById("input-pedidos").value;
+      const pedidosLinhas = pedidosTexto.split('\n');
+      const totalPorCategoria = {};
+      let gramaturaTotal = 0;
+      let valorTotal = 0;
+
+      for (let i = 0; i < pedidosLinhas.length; i += 3) {
+        const quantidade = parseInt(pedidosLinhas[i]);
+        const descricao = pedidosLinhas[i + 1];
+
+        for (const produto of produtos) {
+          if (descricao.includes(produto.nome)) {
+            const valorProduto = quantidade * produto.valor;
+            const gramaturaProduto = quantidade * produto.gramatura;
+
+            if (totalPorCategoria[produto.nome]) {
+              totalPorCategoria[produto.nome].quantidade += quantidade;
+              totalPorCategoria[produto.nome].valorTotal += valorProduto;
+            } else {
+              totalPorCategoria[produto.nome] = {
+                quantidade,
+                valorTotal: valorProduto,
+              };
+            }
+
+            gramaturaTotal += gramaturaProduto;
+            valorTotal += valorProduto;
+          }
+        }
+      }
+      const valorPorCategoriaElement = document.getElementById("valor-por-categoria");
+      valorPorCategoriaElement.innerHTML = "";
+
+      for (const categoria in totalPorCategoria) {
+        const { valorTotal } = totalPorCategoria[categoria];
+        const listItemValorPorCategoria = document.createElement("li");
+        listItemValorPorCategoria.textContent = `${categoria}: R$${valorTotal}`;
+        valorPorCategoriaElement.appendChild(listItemValorPorCategoria);
+      }
+
+      const totalCategoriasElement = document.getElementById("total-categorias");
+      totalCategoriasElement.innerHTML = "";
+
+      for (const categoria in totalPorCategoria) {
+        const { quantidade, valorTotal } = totalPorCategoria[categoria];
+        const listItemCategoria = document.createElement("li");
+        listItemCategoria.textContent = `${categoria}: ${quantidade}`;
+        totalCategoriasElement.appendChild(listItemCategoria);
+      }
+
+      const resultadoFinalElement = document.getElementById("resultado-final");
+      resultadoFinalElement.innerHTML = "";
+
+      const listItemValorTotal = document.createElement("li");
+      listItemValorTotal.textContent = `Valor Total do Pedido: R$${valorTotal}`;
+      resultadoFinalElement.appendChild(listItemValorTotal);
+
+      const listItemGramatura = document.createElement("li");
+      listItemGramatura.textContent = `Peso Total: ${gramaturaTotal}g`;
+      resultadoFinalElement.appendChild(listItemGramatura);
+    }
+    function resetInfo() {
+  document.getElementById("input-pedidos").value = ""; // Limpa a caixa de texto
+  document.getElementById("total-categorias").innerHTML = ""; // Limpa a lista de quantidade de itens
+  document.getElementById("valor-por-categoria").innerHTML = ""; // Limpa a lista de valor por categoria
+  document.getElementById("resultado-final").innerHTML = ""; // Limpa a lista de informações do pedido
+}
+  </script>
+
+</body>
+
+</html>

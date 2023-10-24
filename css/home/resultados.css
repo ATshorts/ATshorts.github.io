@@ -1,0 +1,16 @@
+.resultados {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  padding-top: 20px;
+  padding-bottom: 20px;
+}
+.resultado-div {
+  padding: 10px 20px 10px 20px;
+  background-color: var(--cor-5);
+  height: max-content;
+  border: 6px solid var(--cor-5);
+  border-radius: 4px;
+  color: var(--cor-2);
+  box-shadow: 0 3px 4px rgba(0, 0, 0, 0.1);
+}
